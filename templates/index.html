@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/style1.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body onload="deactivate()">
+      <div class="container">
+          <div class="header">
+            
+          </div>
+          <div class="row marketing">
+          
+          
+        </div>
+        <script>
+            var callbackFunction = function(data) {
+              var wind = data.query.results.channel.wind;
+              alert(wind.chill);
+            };
+          </script>
+          
+              <h1>Have a Chat With A friendly Chat Bot</h1>
+    
+              <fieldset class="field" style="min-width:80%; margin-left:10% ">
+                <div id="chatbox" style="min-width: 80px;">
+                  <p class="botText">
+                    <span>Hi! I'm Mobiaas.</span><button class="btn btn-success" id="activate" onclick="Action()" &emsp>Start Chat</button> 
+                  </p>
+                </div>
+                <div id="userInput">
+                  <input id="textInput" type="search" name="msg" placeholder="Message" style="width:100%;" data-clear-btn="true">
+                  <input id="buttonInput" type="submit" value="Send" onclick="getBotResponse()">
+                  <button id="endbtn" onclick="deactivate()">End Chat</button>
+        
+                </div>
+              </fieldset>
+            
+    
+            
+          </div>
+
+      <script>
+        var input = document.getElementById("userInput");
+        var startbtn = document.getElementById("activate");
+
+        function deactivate(){
+            input.style.display = "none"
+            startbtn.style.display = "block"
+            $("#chatbox").removeData();
+          }
+        function Action(){
+            input.style.display = "block"
+            startbtn.style.display = "none"
+          }
+
+        function getBotResponse() {
+            var rawText = $('#textInput').val();
+            var userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
+          
+            $("#chatbox").append(userHtml);
+            document.getElementById('userInput').scrollIntoView({
+                block: 'start', behavior: 'smooth'
+                });
+            $.get("/get", { msg: rawText }).done(function(data) {
+              var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+              $("#chatbox").append(botHtml);
+              document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+              $("#textInput").val("");
+           
+          });
+         
+        }
+      </script>
+      <footer class="footer">
+          <p>&copy; exampledomain.com 2018</p>
+        </footer>
+  </body>
+</html>
